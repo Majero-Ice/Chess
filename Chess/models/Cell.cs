@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Chess.models.Pieces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,8 +14,7 @@ namespace Chess.models
         public int Y { get; }
         public Board Board { get; }
         public Color Color { get; }
-        public Figure? Figure { get; set; }
-        public int Id { get; }
+        public Piece? Piece { get; set; }
         public bool Selected { get; set; }
         public bool Available { get; set; }
 
@@ -24,9 +24,15 @@ namespace Chess.models
             Y = y;
             Color = color;
             Board = board;
-            Figure = null; // Явно указываем начальное значение
+            Piece = null;
             Selected = false;
             Available = false;
+        }
+
+        public void click()
+        {
+            Selected = true;
+            Console.WriteLine(1);
         }
     }
 
