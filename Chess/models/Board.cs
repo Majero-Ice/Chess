@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace Chess.models
 {
@@ -27,7 +29,18 @@ namespace Chess.models
                 for (int x = 0; x < 8; x++)
                 {
                     var color = (x + y) % 2 == 0 ? Color.White : Color.Black;
-                    row.Add(new Cell(x, y, color, this));
+                    var rectangle = new Rectangle
+                    {
+                        Width = 50,
+                        Height = 50,
+                        Fill = color == models.Color.White ? Brushes.White : Brushes.Black
+                    };
+                    Cell cell = new Cell(x, y, color, this);
+                    cell.Grid.Children.Add(rectangle);
+                    cell.CellUI = rectangle;
+                    row.Add(cell);
+                    
+
                 }
                 Cells.Add(row);
             }

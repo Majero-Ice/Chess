@@ -9,6 +9,8 @@ namespace Chess.models.Pieces
     public class Queen : Piece
     {
         public Queen(int x, int y, Color color, Board board)
-            : base(x, y, color, board) { }
+            : base(x, y, color, board) {
+            Name = PieceNames.Queen;
+        }
     }
 }

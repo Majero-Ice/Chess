@@ -9,6 +9,8 @@ namespace Chess.models.Pieces
     public class King : Piece
     {
         public King(int x, int y, Color color, Board board)
-            : base(x, y, color, board) { }
+            : base(x, y, color, board) {
+            Name = PieceNames.King;
+        }
     }
 }

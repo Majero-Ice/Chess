@@ -30,7 +30,7 @@ namespace Chess.models.Pieces
                 Height = 35,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center,
-                Source = new BitmapImage(new Uri($"pack://application:,,,/assets/{Color}_{Name}.png"))
+                Source = new BitmapImage(new Uri($"pack://application:,,,/assets/{Color}_{this.GetType().Name}.png"))
             };
             Board = board;
         }

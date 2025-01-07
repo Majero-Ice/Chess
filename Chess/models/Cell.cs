@@ -1,6 +1,7 @@
 ﻿using Chess.models.Pieces;
 using System;
 using System.Collections.Generic;
+using System.Windows.Shapes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ namespace Chess.models
         public int Y { get; }
         public Board Board { get; }
         public Grid Grid { get; }
+        public Rectangle CellUI { get; set; }
         public Color Color { get; }
         public Piece? Piece { get; set; }
         public bool Selected { get; set; }
@@ -29,6 +31,7 @@ namespace Chess.models
             Piece = null;
             Selected = false;
             Available = false;
+            Grid = new Grid();
         }
 
         public void SetFigure(Piece piece)

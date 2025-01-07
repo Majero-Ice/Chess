@@ -44,23 +44,14 @@ namespace Chess
                 for (int x = 0; x < cells[y].Count; x++)
                 {
                     Cell cell = cells[y][x];
-                    var rectangle = new Rectangle
-                    {
-                        Width = 50,
-                        Height = 50,
-                        Fill = cell.Color == models.Color.White ? Brushes.White : Brushes.Black
-                    };
-
-                    var grid = new Grid();
-                    grid.Children.Add(rectangle);
-
+                    
                     if (cell.Piece != null)
                     {
                        
-                        grid.Children.Add(cell.Piece.Image);
+                        cell.Grid.Children.Add(cell.Piece.Image);
                     }
 
-                    grid.MouseLeftButtonDown += (s, e) =>
+                    cell.Grid.MouseLeftButtonDown += (s, e) =>
                     {
                         if (SelectedCellRectangle != null) 
                         {
@@ -69,17 +60,17 @@ namespace Chess
                         }
                         if (cell.click())
                         {
-                            rectangle.Fill = Brushes.Teal;
+                            cell.CellUI.Fill = Brushes.Teal;
                             SelectedCell = cell;
-                            SelectedCellRectangle = rectangle;
+                            SelectedCellRectangle = cell.CellUI;
 
-                            GetAvailableMoves(cell, grid);
+                            GetAvailableMoves(cell, cell.Grid);
                         }
                     };
 
-                    Grid.SetRow(grid, y);
-                    Grid.SetColumn(grid, x);
-                    ChessBoardGrid.Children.Add(grid);
+                    Grid.SetRow(cell.Grid, y);
+                    Grid.SetColumn(cell.Grid, x);
+                    ChessBoardGrid.Children.Add(cell.Grid);
                 }
             }
         }
@@ -118,6 +109,7 @@ namespace Chess
                                 Height = 25,
                                 Fill = Brushes.Green
                             };
+                            target.Grid.Children.Add(highlight);
 
 
 

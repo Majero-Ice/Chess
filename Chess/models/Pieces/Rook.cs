@@ -9,6 +9,8 @@ namespace Chess.models.Pieces
     public class Rook : Piece
     {
         public Rook(int x, int y, Color color, Board board)
-            : base(x, y, color, board) { }
+            : base(x, y, color, board) {
+            Name = PieceNames.Rook;
+        }
     }
 }
