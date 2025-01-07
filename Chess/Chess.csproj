@@ -24,6 +24,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="assets\black_piece.png" />
+    <Resource Include="assets\white_piece.png" />
     <Resource Include="assets\black_bishop.png" />
     <Resource Include="assets\black_king.png" />
     <Resource Include="assets\black_knight.png" />

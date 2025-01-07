@@ -51,6 +51,48 @@ namespace Chess.models
             CurrentPlayer = CurrentPlayer == Color.White ? Color.Black : Color.White;
         }
 
+        
+
+        public bool IsKingUnderAttack(Cell? king)
+        {
+            if (king?.Piece == null || king.Piece.Name != PieceNames.King)
+            {
+                return false;
+            }
+
+            foreach (var row in Cells)
+            {
+                foreach (var target in row)
+                {
+                    if (target.Piece?.CanMove(king) == true)
+                    {
+                        Console.WriteLine(target);
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public Cell? GetKing(Color color)
+        {
+            foreach (var row in Cells)
+            {
+                foreach (var target in row)
+                {
+                    if (target.Piece?.Color == color && target.Piece?.Name == PieceNames.King)
+                    {
+                        return target;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+
+
         public List<Piece> AddPieces(Board board)
         {
             var figures = new List<Piece>();

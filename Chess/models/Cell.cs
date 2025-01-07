@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Documents;
 
 namespace Chess.models
@@ -13,6 +14,7 @@ namespace Chess.models
         public int X { get; }
         public int Y { get; }
         public Board Board { get; }
+        public Grid Grid { get; }
         public Color Color { get; }
         public Piece? Piece { get; set; }
         public bool Selected { get; set; }
@@ -29,11 +31,36 @@ namespace Chess.models
             Available = false;
         }
 
-        public void click()
+        public void SetFigure(Piece piece)
         {
-            Selected = true;
-            Console.WriteLine(1);
+            Piece = piece;
         }
+
+        public void MoveFigure(Cell target)
+        {
+            if (Piece != null)
+            {
+                target.Piece = Piece;
+                Piece.Move(target);
+                Piece = null;
+            }
+        }
+
+        public bool click()
+        {
+            if (Available)
+            {
+                Board.TogglePlayer();
+                return true;
+            }else if (Piece?.Color == Board.CurrentPlayer) 
+            {
+                Selected = true;
+                return true;
+            }
+            return false;
+        }
+
+
     }
 
 }

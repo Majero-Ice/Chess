@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace Chess.models.Pieces
 {
@@ -10,7 +13,7 @@ namespace Chess.models.Pieces
     {
         public int X { get; set; }
         public int Y { get; set; }
-        public string Img { get; set; }
+        public Image Image { get; set; }
         public Color Color { get; }
         public PieceNames Name { get; set; }
         public Board Board { get; }
@@ -21,12 +24,25 @@ namespace Chess.models.Pieces
             Y = y;
             Color = color;
             Name = PieceNames.Piece; 
-            Img = "path_to_black_pawn_image"; 
+            Image = new Image
+            {
+                Width = 35,
+                Height = 35,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                Source = new BitmapImage(new Uri($"pack://application:,,,/assets/{Color}_{Name}.png"))
+            };
             Board = board;
         }
 
-        public bool CanMove() {
+        public bool CanMove(Cell Piece) {
             return true;
+        }
+
+        public void Move(Cell target)
+        {
+            X = target.X;
+            Y = target.Y;
         }
     }
 

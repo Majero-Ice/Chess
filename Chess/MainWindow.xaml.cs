@@ -19,11 +19,13 @@ namespace Chess
     /// </summary>
     public partial class MainWindow : Window
     {
+        Cell? SelectedCell = null;
+        Rectangle? SelectedCellRectangle = null;
+        Board Board = new Board();
         public MainWindow()
         {
-            Board board = new Board();
             InitializeComponent();
-            GenerateChessBoard(board.Cells);
+            GenerateChessBoard(Board.Cells);
         }
 
         private void GenerateChessBoard(List<List<Cell>> cells)
@@ -54,22 +56,25 @@ namespace Chess
 
                     if (cell.Piece != null)
                     {
-                        var image = new Image
-                        {
-                            Width = 35,
-                            Height = 35,
-                            HorizontalAlignment = HorizontalAlignment.Center,
-                            VerticalAlignment = VerticalAlignment.Center,
-                            Source = new BitmapImage(new Uri($"pack://application:,,,/assets/{cell.Piece.Color}_{cell.Piece.GetType().Name}.png"))
-                        };
-
-                        grid.Children.Add(image);
+                       
+                        grid.Children.Add(cell.Piece.Image);
                     }
 
                     grid.MouseLeftButtonDown += (s, e) =>
                     {
-                        rectangle.Fill = Brushes.Teal;
-                        cell.click();
+                        if (SelectedCellRectangle != null) 
+                        {
+                            SelectedCellRectangle.Fill = SelectedCell?.Color == models.Color.White ? Brushes.White : Brushes.Black;
+                            SelectedCell = null;
+                        }
+                        if (cell.click())
+                        {
+                            rectangle.Fill = Brushes.Teal;
+                            SelectedCell = cell;
+                            SelectedCellRectangle = rectangle;
+
+                            GetAvailableMoves(cell, grid);
+                        }
                     };
 
                     Grid.SetRow(grid, y);
@@ -77,6 +82,59 @@ namespace Chess
                     ChessBoardGrid.Children.Add(grid);
                 }
             }
+        }
+
+        public bool GetAvailableMoves(Cell? selectedCell, Grid grid)
+        {
+            bool result = false;
+
+            for (int y = 0; y < Board.Cells.Count; y++)
+            {
+                var row = Board.Cells[y];
+                for (int x = 0; x < row.Count; x++)
+                {
+                    var target = row[x];
+
+                    if (selectedCell?.Piece?.CanMove(target) == true)
+                    {
+                        var selectedCellFigure = selectedCell.Piece;
+                        var targetFigure = target.Piece;
+
+                        selectedCell.Piece = null;
+                        target.Piece = selectedCellFigure;
+
+                        if (Board.IsKingUnderAttack(Board.GetKing(selectedCellFigure.Color)))
+                        {
+                            target.Available = false;
+                        }
+                        else
+                        {
+                            target.Available = true;
+                            result = true;
+
+                            Ellipse highlight = new Ellipse
+                            {
+                                Width = 25,
+                                Height = 25,
+                                Fill = Brushes.Green
+                            };
+
+
+
+
+                        }
+
+                        selectedCell.Piece = selectedCellFigure;
+                        target.Piece = targetFigure;
+                    }
+                    else
+                    {
+                        target.Available = false;
+                    }
+                }
+            }
+
+            return result;
         }
     }
 }
