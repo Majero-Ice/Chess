@@ -88,41 +88,18 @@ namespace Chess
 
                     if (selectedCell?.Piece?.CanMove(target) == true)
                     {
-                        var selectedCellFigure = selectedCell.Piece;
-                        var targetFigure = target.Piece;
+                        target.Available = true;
+                        result = true;
 
-                        selectedCell.Piece = null;
-                        target.Piece = selectedCellFigure;
-
-                        if (Board.IsKingUnderAttack(Board.GetKing(selectedCellFigure.Color)))
+                        Ellipse highlight = new Ellipse
                         {
-                            target.Available = false;
-                        }
-                        else
-                        {
-                            target.Available = true;
-                            result = true;
-
-                            Ellipse highlight = new Ellipse
-                            {
-                                Width = 25,
-                                Height = 25,
-                                Fill = Brushes.Green
-                            };
-                            target.Grid.Children.Add(highlight);
-
-
-
-
-                        }
-
-                        selectedCell.Piece = selectedCellFigure;
-                        target.Piece = targetFigure;
+                            Width = 12.5,
+                            Height = 12.5,
+                            Fill = Brushes.Green
+                        };
+                        target.Grid.Children.Add(highlight);
                     }
-                    else
-                    {
-                        target.Available = false;
-                    }
+                        
                 }
             }
 

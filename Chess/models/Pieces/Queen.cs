@@ -12,5 +12,20 @@ namespace Chess.models.Pieces
             : base(x, y, color, board) {
             Name = PieceNames.Queen;
         }
+
+        public override bool CanMove(Cell target)
+        {
+            if (!base.CanMove(target))
+            {
+                return false;
+            }
+
+            var currentCell = this.Board.GetCell(this.X, this.Y);
+
+            return currentCell.IsEmptyVertical(target) ||
+                   currentCell.IsEmptyHorizontal(target) ||
+                   currentCell.IsEmptyDiagonal(target);
+        }
+
     }
 }

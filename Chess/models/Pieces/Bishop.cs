@@ -12,5 +12,17 @@ namespace Chess.models.Pieces
             : base(x, y, color, board) {
             Name = PieceNames.Bishop;
         }
+
+        public override bool CanMove(Cell target)
+        {
+            if (!base.CanMove(target))
+            {
+                return false;
+            }
+
+            var currentCell = this.Board.GetCell(this.X, this.Y);
+
+            return currentCell.IsEmptyDiagonal(target);
+        }
     }
 }

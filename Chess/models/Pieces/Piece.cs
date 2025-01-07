@@ -35,11 +35,12 @@ namespace Chess.models.Pieces
             Board = board;
         }
 
-        public bool CanMove(Cell Piece) {
+        public virtual bool CanMove(Cell target) {
+            if (target.Piece?.Color == Color) { return false; }
             return true;
         }
 
-        public void Move(Cell target)
+        public virtual void Move(Cell target)
         {
             X = target.X;
             Y = target.Y;
