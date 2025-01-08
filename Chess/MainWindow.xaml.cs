@@ -44,28 +44,45 @@ namespace Chess
                 for (int x = 0; x < cells[y].Count; x++)
                 {
                     Cell cell = cells[y][x];
-                    
+
                     if (cell.Piece != null)
                     {
-                       
+
                         cell.Grid.Children.Add(cell.Piece.Image);
                     }
 
                     cell.Grid.MouseLeftButtonDown += (s, e) =>
                     {
-                        if (SelectedCellRectangle != null) 
+                        Console.WriteLine(SelectedCell?.X.ToString() + SelectedCell?.Y);
+                        if (SelectedCellRectangle != null)
                         {
                             SelectedCellRectangle.Fill = SelectedCell?.Color == models.Color.White ? Brushes.White : Brushes.Black;
-                            SelectedCell = null;
+                            
                         }
-                        if (cell.click())
+                        if (cell.Available && SelectedCell != null)
                         {
+                            Board.ClearAvailableMoves();
+                            SelectedCell.MovePiece(cell);
+                            SelectedCell = null;
+                            SelectedCellRectangle = null;
+                            Board.TogglePlayer();
+                            
+                            
+                        }else if(Board.CurrentPlayer == cell.Piece?.Color)
+                        {
+                            Board.ClearAvailableMoves();
                             cell.CellUI.Fill = Brushes.Teal;
                             SelectedCell = cell;
                             SelectedCellRectangle = cell.CellUI;
-
-                            GetAvailableMoves(cell, cell.Grid);
+                            Board.GetAvailableMoves(cell);
                         }
+                        else
+                        {
+                            Board.ClearAvailableMoves();
+                            SelectedCell = null;
+                            SelectedCellRectangle = null;
+                        }
+                        
                     };
 
                     Grid.SetRow(cell.Grid, y);
@@ -73,37 +90,6 @@ namespace Chess
                     ChessBoardGrid.Children.Add(cell.Grid);
                 }
             }
-        }
-
-        public bool GetAvailableMoves(Cell? selectedCell, Grid grid)
-        {
-            bool result = false;
-
-            for (int y = 0; y < Board.Cells.Count; y++)
-            {
-                var row = Board.Cells[y];
-                for (int x = 0; x < row.Count; x++)
-                {
-                    var target = row[x];
-
-                    if (selectedCell?.Piece?.CanMove(target) == true)
-                    {
-                        target.Available = true;
-                        result = true;
-
-                        Ellipse highlight = new Ellipse
-                        {
-                            Width = 12.5,
-                            Height = 12.5,
-                            Fill = Brushes.Green
-                        };
-                        target.Grid.Children.Add(highlight);
-                    }
-                        
-                }
-            }
-
-            return result;
         }
     }
 }

@@ -79,7 +79,6 @@ namespace Chess.models
                 {
                     if (target.Piece?.CanMove(king) == true)
                     {
-                        Console.WriteLine(target);
                         return true;
                     }
                 }
@@ -87,8 +86,93 @@ namespace Chess.models
 
             return false;
         }
+        public bool GetAvailableMoves(Cell? selectedCell)
+        {
+            bool result = false;
 
-        public Cell? GetKing(Color color)
+            for (int y = 0; y < Cells.Count; y++)
+            {
+                var row = Cells[y];
+                for (int x = 0; x < row.Count; x++)
+                {
+                    var target = row[x];
+
+                    if (selectedCell?.Piece?.CanMove(target) == true)
+                    {
+                        var selectedCellPiece = selectedCell.Piece;
+                        var targetPiece = target.Piece;
+
+                        selectedCell.Piece = null;
+                        target.Piece = selectedCellPiece;
+
+                        if (IsKingUnderAttack(GetKing(selectedCellPiece?.Color)))
+                        {
+                            target.Available = false;
+                        }
+                        else
+                        {
+                            target.Available = true;
+                            result = true;
+                            selectedCell.Piece = selectedCellPiece;
+                            target.Piece = targetPiece;
+                            if (target.Piece != null)
+                            {
+                                ((Rectangle)target.Grid.Children[0]).Fill = Brushes.Green;
+                            }
+                            else
+                            {
+                                Ellipse highlight = new Ellipse
+                                {
+                                    Width = 12.5,
+                                    Height = 12.5,
+                                    Fill = Brushes.Green
+                                };
+                                target.Grid.Children.Add(highlight);
+                            }
+                        }
+                        selectedCell.Piece = selectedCellPiece;
+                        target.Piece = targetPiece;
+
+
+                    }
+
+                }
+            }
+
+            return result;
+        }
+
+
+
+        public void ClearAvailableMoves()
+        {
+            for (int y = 0; y < Cells.Count; y++)
+            {
+                var row = Cells[y];
+                for (int x = 0; x < row.Count; x++)
+                {
+                    var target = row[x];
+
+                    if (target.Available)
+                    {
+                        target.Available = false;
+
+                        if (target.Piece == null)
+                        {
+                            target.Grid.Children.RemoveAt(1);
+                        }
+                        else
+                        {
+                            ((Rectangle)target.Grid.Children[0]).Fill = (target.Color == models.Color.White) ? Brushes.White : Brushes.Black;
+                        }
+                    }
+
+                }
+            }
+
+        }
+
+        public Cell? GetKing(Color? color)
         {
             foreach (var row in Cells)
             {

@@ -34,22 +34,29 @@ namespace Chess.models
             Grid = new Grid();
         }
 
-        public void SetFigure(Piece piece)
+        public void SetPiece(Piece piece)
         {
             Piece = piece;
         }
 
-        public void MoveFigure(Cell target)
+        public void MovePiece(Cell target)
         {
             if (Piece != null)
             {
+                
+                Grid.Children.RemoveAt(1);
+                if(target.Piece != null)
+                {
+                    target.Grid.Children.RemoveAt(1);
+                }
                 target.Piece = Piece;
+                target.Grid.Children.Add(Piece.Image);
                 Piece.Move(target);
                 Piece = null;
             }
         }
 
-        public bool click()
+        public bool Click()
         {
             if (Available)
             {
