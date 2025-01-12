@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
@@ -64,7 +65,45 @@ namespace Chess.models
             CurrentPlayer = CurrentPlayer == Color.White ? Color.Black : Color.White;
         }
 
-        
+        public bool IsKingPossibleMoves(Piece? king)
+        {
+            if (king == null)
+            {
+                return false;
+            }
+
+            foreach (var row in Cells)
+            {
+                foreach (var cell in row)
+                {
+                    if (king.CanMove(cell))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public bool IsKingProtection(Color color)
+        {
+            foreach (var row in Cells)
+            {
+                foreach (var cell in row)
+                {
+                    if (cell.Piece?.Color == color && GetAvailableMoves(cell))
+                    {
+                        ClearAvailableMoves();
+                        return true;
+                    }
+                }
+            }
+            return false;
+             
+        }
+
+
 
         public bool IsKingUnderAttack(Cell? king)
         {

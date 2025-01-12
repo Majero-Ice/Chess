@@ -22,12 +22,50 @@ namespace Chess
         Cell? SelectedCell = null;
         Rectangle? SelectedCellRectangle = null;
         Board Board = new Board();
+        bool IsCheck = false;
+        PlayerPanel lostWhitePieces = new PlayerPanel(models.Color.White);
+        PlayerPanel lostBlackPieces = new PlayerPanel(models.Color.Black);
         public MainWindow()
         {
             InitializeComponent();
             GenerateChessBoard(Board.Cells);
         }
 
+
+        private void IsViktory()
+        {
+            Cell CurrentKingCell = Board.GetKing(Board.CurrentPlayer) as Cell;
+             if (Board.IsKingUnderAttack(CurrentKingCell)){
+                IsCheck = true;
+                CurrentKingCell.CellUI.Fill = Brushes.Red;
+            }else
+            {
+                IsCheck = false;
+                CurrentKingCell.CellUI.Fill = CurrentKingCell?.Color == models.Color.White ? Brushes.White : Brushes.Black;
+            }
+
+            if (!Board.IsKingPossibleMoves(CurrentKingCell?.Piece) && !Board.IsKingProtection(Board.CurrentPlayer) && IsCheck)
+            {
+                MessageBox.Show("{0} Player won!", Board.CurrentPlayer.ToString());
+            }
+        }
+
+        private void AddLostFigure(Cell cell)
+        {
+            if (cell.Piece != null)
+            {
+                return;
+            }
+            if (cell.Piece.Color == models.Color.White)
+            {
+                lostWhitePieces.Add(cell.Piece);
+            }
+            else
+            {
+                lostBlackPieces.Add(cell.Piece);
+            }
+
+        }
         private void GenerateChessBoard(List<List<Cell>> cells)
         {
             ChessBoardGrid.RowDefinitions.Clear();
@@ -53,7 +91,8 @@ namespace Chess
 
                     cell.Grid.MouseLeftButtonDown += (s, e) =>
                     {
-                        Console.WriteLine(SelectedCell?.X.ToString() + SelectedCell?.Y);
+                        
+
                         if (SelectedCellRectangle != null)
                         {
                             SelectedCellRectangle.Fill = SelectedCell?.Color == models.Color.White ? Brushes.White : Brushes.Black;
@@ -63,12 +102,14 @@ namespace Chess
                         {
                             Board.ClearAvailableMoves();
                             SelectedCell.MovePiece(cell);
+                            AddLostFigure(cell);
                             SelectedCell = null;
                             SelectedCellRectangle = null;
+                            IsViktory();
                             Board.TogglePlayer();
-                            
-                            
-                        }else if(Board.CurrentPlayer == cell.Piece?.Color)
+                            IsViktory();
+                        }
+                        else if(Board.CurrentPlayer == cell.Piece?.Color)
                         {
                             Board.ClearAvailableMoves();
                             cell.CellUI.Fill = Brushes.Teal;
@@ -82,6 +123,8 @@ namespace Chess
                             SelectedCell = null;
                             SelectedCellRectangle = null;
                         }
+
+
                         
                     };
 

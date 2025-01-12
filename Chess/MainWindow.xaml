@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Chess"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" HorizontalAlignment="Center" VerticalAlignment="Center">
+        Title="MainWindow" Height="600" Width="800" HorizontalAlignment="Center" VerticalAlignment="Center">
     <Grid Name="ChessBoardGrid" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    <Grid Name="WhitePlayer" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+    <Grid Name="BlackPlayer" VerticalAlignment="Top" HorizontalAlignment="Center"/>
 </Window>
