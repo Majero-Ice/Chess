@@ -4,24 +4,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
+using System.Xml.Linq;
 
 namespace Chess.models
 {
-    class PlayerPanel
+    public class PlayerPanel
     {
-        Color Color { get;}
-        Grid Grid { get; }
+        Color Color { get; }
+
         List<Piece> LostPieces = new List<Piece>();
-        public PlayerPanel(Color Color) {
+        public PlayerPanel(Color Color)
+        {
             this.Color = Color;
-            Grid = new Grid();
         }
 
         public void AddLostPiece(Piece piece)
         {
             LostPieces.Add(piece);
-            //Grid.Children.Add(piece.Image);
+        }
+
+        public int count(PieceNames pieceName)
+        {
+            var pieces = LostPieces.Where(p => p.Name == pieceName);
+            return pieces.Count();
         }
     }
+      
 }
+

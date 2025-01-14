@@ -34,7 +34,7 @@ namespace Chess.models
                     {
                         Width = 50,
                         Height = 50,
-                        Fill = color == models.Color.White ? Brushes.White : Brushes.Black
+                        Fill = color == models.Color.White ? Brushes.Beige : Brushes.SaddleBrown
                     };
                     Cell cell = new Cell(x, y, color, this);
                     cell.Grid.Children.Add(rectangle);
@@ -202,7 +202,7 @@ namespace Chess.models
                         }
                         else
                         {
-                            ((Rectangle)target.Grid.Children[0]).Fill = (target.Color == models.Color.White) ? Brushes.White : Brushes.Black;
+                            ((Rectangle)target.Grid.Children[0]).Fill = (target.Color == models.Color.White) ? Brushes.Beige : Brushes.SaddleBrown;
                         }
                     }
 

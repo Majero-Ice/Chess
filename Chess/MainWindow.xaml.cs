@@ -23,8 +23,8 @@ namespace Chess
         Rectangle? SelectedCellRectangle = null;
         Board Board = new Board();
         bool IsCheck = false;
-        PlayerPanel lostWhitePieces = new PlayerPanel(models.Color.White);
-        PlayerPanel lostBlackPieces = new PlayerPanel(models.Color.Black);
+        private PlayerPanel WhitePlayer = new PlayerPanel(models.Color.White);
+        private PlayerPanel BlackPlayer = new PlayerPanel(models.Color.Black);
         public MainWindow()
         {
             InitializeComponent();
@@ -32,40 +32,140 @@ namespace Chess
         }
 
 
-        private void IsViktory()
+        private void IsVictory()
         {
-            Cell CurrentKingCell = Board.GetKing(Board.CurrentPlayer) as Cell;
+            Cell CurrentKingCell = Board.GetKing(Board.CurrentPlayer);
              if (Board.IsKingUnderAttack(CurrentKingCell)){
                 IsCheck = true;
                 CurrentKingCell.CellUI.Fill = Brushes.Red;
             }else
             {
                 IsCheck = false;
-                CurrentKingCell.CellUI.Fill = CurrentKingCell?.Color == models.Color.White ? Brushes.White : Brushes.Black;
+                CurrentKingCell.CellUI.Fill = CurrentKingCell?.Color == models.Color.White ? Brushes.Beige : Brushes.SaddleBrown;
             }
 
             if (!Board.IsKingPossibleMoves(CurrentKingCell?.Piece) && !Board.IsKingProtection(Board.CurrentPlayer) && IsCheck)
             {
-                MessageBox.Show("{0} Player won!", Board.CurrentPlayer.ToString());
+                MessageBox.Show($"{Board.CurrentPlayer.ToString()} Player won!");
             }
         }
 
-        private void AddLostFigure(Cell cell)
+        private void AddLostPiece(Cell cell)
         {
-            if (cell.Piece != null)
+            if (cell.Piece == null)
             {
                 return;
             }
-            if (cell.Piece.Color == models.Color.White)
+            if (cell.Piece.Color != models.Color.White)
             {
-                lostWhitePieces.Add(cell.Piece);
+                WhitePlayer.AddLostPiece(cell.Piece);
             }
             else
             {
-                lostBlackPieces.Add(cell.Piece);
+                BlackPlayer.AddLostPiece(cell.Piece);
+            }
+        }
+
+        private void LostPiecesCount(Piece? piece)
+        {
+            if (piece == null)
+            {
+                return;
+            }
+            switch (piece.Name)
+            {
+                case PieceNames.Pawn:
+
+                    if (Board.CurrentPlayer == models.Color.White)
+                    {
+                        BlackPawnCount.Text = "x" + WhitePlayer.count(PieceNames.Pawn).ToString();
+                    }
+                    else
+                    {
+                        WhitePawnCount.Text = "x" + BlackPlayer.count(PieceNames.Pawn).ToString();
+                    }
+                    break;
+                case PieceNames.Rook:
+                    if (Board.CurrentPlayer == models.Color.White)
+                    {
+                        BlackRookCount.Text = "x" + WhitePlayer.count(PieceNames.Rook).ToString();
+                    }
+                    else
+                    {
+                        WhiteRookCount.Text = "x" + BlackPlayer.count(PieceNames.Rook).ToString();
+                    }
+                    break;
+                case PieceNames.Queen:
+                    if (Board.CurrentPlayer == models.Color.White)
+                    {
+                        BlackQueenCount.Text = "x" + WhitePlayer.count(PieceNames.Queen).ToString();
+                    }
+                    else
+                    {
+                        WhiteQueenCount.Text = "x" + BlackPlayer.count(PieceNames.Queen).ToString();
+                    }
+                    break;
+                case PieceNames.Bishop:
+                    if (Board.CurrentPlayer == models.Color.White)
+                    {
+                        BlackBishopCount.Text = "x" + WhitePlayer.count(PieceNames.Bishop).ToString();
+                    }
+                    else
+                    {
+                        WhiteBishopCount.Text = "x" + BlackPlayer.count(PieceNames.Bishop).ToString();
+                    }
+                    break;
+                case PieceNames.Knight:
+                    if (Board.CurrentPlayer == models.Color.White)
+                    {
+                        BlackKnightCount.Text = "x" + WhitePlayer.count(PieceNames.Knight).ToString();
+                    }
+                    else
+                    {
+                        WhiteKnightCount.Text = "x" + BlackPlayer.count(PieceNames.Knight).ToString();
+                    }
+                    break;
+            }
+        }
+
+        private void Click(Cell cell) 
+        {
+
+            if (SelectedCellRectangle != null)
+            {
+                SelectedCellRectangle.Fill = SelectedCell?.Color == models.Color.White ? Brushes.Beige : Brushes.SaddleBrown;
+
+            }
+            if (cell.Available && SelectedCell != null)
+            {
+                Board.ClearAvailableMoves();
+                AddLostPiece(cell);
+                LostPiecesCount(cell.Piece);
+                SelectedCell.MovePiece(cell);
+                SelectedCell = null;
+                SelectedCellRectangle = null;
+                IsVictory();
+                Board.TogglePlayer();
+                IsVictory();
+            }
+            else if (Board.CurrentPlayer == cell.Piece?.Color)
+            {
+                Board.ClearAvailableMoves();
+                cell.CellUI.Fill = Brushes.Green;
+                SelectedCell = cell;
+                SelectedCellRectangle = cell.CellUI;
+                Board.GetAvailableMoves(cell);
+            }
+            else
+            {
+                Board.ClearAvailableMoves();
+                SelectedCell = null;
+                SelectedCellRectangle = null;
             }
 
+
         }
+
         private void GenerateChessBoard(List<List<Cell>> cells)
         {
             ChessBoardGrid.RowDefinitions.Clear();
@@ -89,44 +189,7 @@ namespace Chess
                         cell.Grid.Children.Add(cell.Piece.Image);
                     }
 
-                    cell.Grid.MouseLeftButtonDown += (s, e) =>
-                    {
-                        
-
-                        if (SelectedCellRectangle != null)
-                        {
-                            SelectedCellRectangle.Fill = SelectedCell?.Color == models.Color.White ? Brushes.White : Brushes.Black;
-                            
-                        }
-                        if (cell.Available && SelectedCell != null)
-                        {
-                            Board.ClearAvailableMoves();
-                            SelectedCell.MovePiece(cell);
-                            AddLostFigure(cell);
-                            SelectedCell = null;
-                            SelectedCellRectangle = null;
-                            IsViktory();
-                            Board.TogglePlayer();
-                            IsViktory();
-                        }
-                        else if(Board.CurrentPlayer == cell.Piece?.Color)
-                        {
-                            Board.ClearAvailableMoves();
-                            cell.CellUI.Fill = Brushes.Teal;
-                            SelectedCell = cell;
-                            SelectedCellRectangle = cell.CellUI;
-                            Board.GetAvailableMoves(cell);
-                        }
-                        else
-                        {
-                            Board.ClearAvailableMoves();
-                            SelectedCell = null;
-                            SelectedCellRectangle = null;
-                        }
-
-
-                        
-                    };
+                    cell.Grid.MouseLeftButtonDown += (s, e) => Click(cell);
 
                     Grid.SetRow(cell.Grid, y);
                     Grid.SetColumn(cell.Grid, x);
