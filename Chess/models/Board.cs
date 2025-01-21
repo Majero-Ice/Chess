@@ -12,7 +12,6 @@ namespace Chess.models
 {
     public class Board
     {
-        //public Cell[][] Cells { get; private set; }
         public List<List<Cell>> Cells { get; private set; } = new List<List<Cell>>();
         public Color CurrentPlayer { get; private set; } = Color.White;
 
@@ -22,6 +21,7 @@ namespace Chess.models
             SetFigures();
         }
 
+        // Erstellt die Zellen des Schachbretts und setzt deren Farben
         private void CreateCells()
         {
             for (int y = 0; y < 8; y++)
@@ -46,7 +46,7 @@ namespace Chess.models
                 Cells.Add(row);
             }
         }
-
+        // Fügt die Schachfiguren auf das Brett hinzu
         private void SetFigures()
         {
             List<Piece> figures = AddPieces(this);
@@ -64,7 +64,7 @@ namespace Chess.models
         {
             CurrentPlayer = CurrentPlayer == Color.White ? Color.Black : Color.White;
         }
-
+        // Prüft, ob der König des aktuellen Spielers sich bewegen kann
         public bool IsKingPossibleMoves(Piece? king)
         {
             if (king == null)
@@ -85,7 +85,7 @@ namespace Chess.models
 
             return false;
         }
-
+        // Überprüft, ob der König durch andere Figuren geschützt wird
         public bool IsKingProtection(Color color)
         {
             foreach (var row in Cells)
@@ -104,7 +104,7 @@ namespace Chess.models
         }
 
 
-
+        // Überprüft, ob der König des Spielers angegriffen wird
         public bool IsKingUnderAttack(Cell? king)
         {
             if (king?.Piece == null || king.Piece.Name != PieceNames.King)
@@ -125,6 +125,7 @@ namespace Chess.models
 
             return false;
         }
+        // Holt alle möglichen Bewegungen für die ausgewählte Figur
         public bool GetAvailableMoves(Cell? selectedCell)
         {
             bool result = false;
@@ -182,7 +183,7 @@ namespace Chess.models
         }
 
 
-
+        // Entfernt alle Markierungen von möglichen Bewegungen
         public void ClearAvailableMoves()
         {
             for (int y = 0; y < Cells.Count; y++)
@@ -211,6 +212,7 @@ namespace Chess.models
 
         }
 
+        // Findet die Position des Königs auf dem Brett
         public Cell? GetKing(Color? color)
         {
             foreach (var row in Cells)
@@ -228,7 +230,7 @@ namespace Chess.models
         }
 
 
-
+        // Erstellt eine Liste mit allen Schachfiguren und deren Startpositionen
         public List<Piece> AddPieces(Board board)
         {
             var figures = new List<Piece>();

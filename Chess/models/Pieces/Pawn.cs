@@ -21,9 +21,9 @@ namespace Chess.models.Pieces
                 return false;
             }
 
-            int direction = Color == Color.Black ? 1 : -1;
+            int direction = Color == Color.Black ? 1 : -1; // Richtung basierend auf der Farbe
 
-            int firstStep = Color == Color.Black ? 2 : -2;
+            int firstStep = Color == Color.Black ? 2 : -2; // Zwei Felder für den ersten Zug
 
             bool step = (target.Y == Y + direction) ||
                         (isFirstStep && target.Y == Y + firstStep);
@@ -32,15 +32,15 @@ namespace Chess.models.Pieces
             bool leftAttack = target.X == X - direction && target.Y == Y + direction;
 
             if (step && target.X == X &&
-                Board.GetCell(target.X, target.Y).IsEmpty &&
-                Board.GetCell(X, Y + direction).IsEmpty)
+                Board.GetCell(target.X, target.Y).IsEmpty && // Ziel-Feld muss leer sein
+                Board.GetCell(X, Y + direction).IsEmpty) // Feld vor dem Ziel muss leer sein
             {
                 return true;
             }
 
             if ((rightAttack || leftAttack) && Board.GetCell(X, Y).IsEnemy(target))
             {
-                return true;
+                return true; // Angriff auf eine gegnerische Figur
             }
 
             return false;

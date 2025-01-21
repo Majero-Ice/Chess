@@ -15,19 +15,20 @@ namespace Chess.models
         Color Color { get; }
 
         List<Piece> LostPieces = new List<Piece>();
+
         public PlayerPanel(Color Color)
         {
             this.Color = Color;
         }
-
+        // Fügt eine verlorene Figur zur Liste hinzu
         public void AddLostPiece(Piece piece)
         {
             LostPieces.Add(piece);
         }
-
+        // Zählt die verlorenen Figuren eines bestimmten Typs
         public int count(PieceNames pieceName)
         {
-            var pieces = LostPieces.Where(p => p.Name == pieceName);
+            var pieces = LostPieces.Where(p => p.Name == pieceName);// Filtert Figuren nach Typ
             return pieces.Count();
         }
     }

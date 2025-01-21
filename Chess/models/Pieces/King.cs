@@ -13,7 +13,7 @@ namespace Chess.models.Pieces
         {
             Name = PieceNames.King;
         }
-
+        // Überprüft, ob der König auf das Ziel-Feld ziehen kann
         public override bool CanMove(Cell target)
         {
             if (!base.CanMove(target))
@@ -36,12 +36,12 @@ namespace Chess.models.Pieces
 
             return diagonalMove && !WillBeUnderAttack(target);
         }
-
+        // Überprüft, ob der König auf dem Ziel-Feld angegriffen wird
         public bool WillBeUnderAttack(Cell target)
         {
-            var prevFigure = target.Piece;
+            var prevFigure = target.Piece; // Speichert die aktuelle Figur auf dem Ziel-Feld
 
-            target.Piece = new Piece(target.X, target.Y, Color, Board);
+            target.Piece = new Piece(target.X, target.Y, Color, Board); // Simuliert die Bewegung auf das Ziel-Feld
 
             for (int y = 0; y < this.Board.Cells.Count; y++)
             {
@@ -51,13 +51,13 @@ namespace Chess.models.Pieces
                     var cell = row[x];
                     if (cell.IsEnemy(target) && cell.Piece?.CanMove(target) == true)
                     {
-                        target.Piece = prevFigure;
+                        target.Piece = prevFigure; // Stellt die ursprüngliche Figur wieder her
                         return true; 
                     }
                 }
             }
 
-            target.Piece = prevFigure;
+            target.Piece = prevFigure; // Stellt die ursprüngliche Figur wieder her
             return false; 
         }
     }

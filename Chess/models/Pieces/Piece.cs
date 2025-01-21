@@ -34,7 +34,7 @@ namespace Chess.models.Pieces
             };
             Board = board;
         }
-
+        // Prüft, ob die Figur auf das Ziel ziehen kann
         public virtual bool CanMove(Cell target) {
             if (target.Piece?.Color == Color) { return false; }
             return true;
@@ -42,8 +42,8 @@ namespace Chess.models.Pieces
 
         public virtual void Move(Cell target)
         {
-            X = target.X;
-            Y = target.Y;
+            X = target.X; // Aktualisiert die X-Koordinate
+            Y = target.Y; // Aktualisiert die Y-Koordinate
         }
     }
 

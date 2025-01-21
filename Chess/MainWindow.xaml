@@ -7,18 +7,20 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="1000" HorizontalAlignment="Center" VerticalAlignment="Center">
     <Grid>
+        <!-- Zeilen und Spalten für das Hauptgitter definieren -->
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/> <!-- Für die Benutzeroberfläche des schwarzen Spielers -->
+            <RowDefinition Height="*"/> <!-- Für das Schachbrett -->
+            <RowDefinition Height="Auto"/> <!-- Für die Benutzeroberfläche des weißen Spielers -->
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/> <!-- Eine einzelne Spalte -->
         </Grid.ColumnDefinitions>
-
-        <Grid x:Name="BlackPlayerGrid" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,39,0,0" Grid.RowSpan="2" >
+        <!-- Gitter für den schwarzen Spieler -->
+        <Grid x:Name="BlackPlayerGrid" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,87,0,0" Grid.RowSpan="2" >
             <TextBlock Text="BlackPlayer" FontSize="25" FontWeight="Bold" 
                        HorizontalAlignment="Center" Margin="0,0,0,39"/>
+            <!-- Panel zur Anzeige der geschlagenen Figuren -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,41,0,0">
                 <StackPanel Width="64" Height="39" HorizontalAlignment="Center" Orientation="Horizontal" VerticalAlignment="Center" Margin="5,0">
                     <TextBlock Text="x0" FontSize="20" FontWeight="Bold" Height="28" Name="WhitePawnCount"/>
@@ -42,16 +44,17 @@
                 </StackPanel>
             </StackPanel>
         </Grid>
-
+        <!-- Gitter für das Schachbrett -->
         <Grid Name="ChessBoardGrid" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
             <Grid.Background>
                 <SolidColorBrush Color="Beige"/>
             </Grid.Background>
         </Grid>
-
-        <Grid x:Name="WhitePlayerGrid" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <!-- Gitter für den weißen Spieler -->
+        <Grid x:Name="WhitePlayerGrid" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,641,0,0" >
             <TextBlock Text="WhitePalyer" FontSize="25" FontWeight="Bold" 
                        HorizontalAlignment="Center" Margin="0,0,0,89"/>
+            <!-- Panel zur Anzeige der geschlagenen Figuren -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,-55,0,0">
                 <StackPanel Width="64" Height="39" HorizontalAlignment="Center" Orientation="Horizontal" VerticalAlignment="Center" Margin="5,0">
                     <TextBlock Text="x0" FontSize="20" FontWeight="Bold" Height="28" Name="BlackPawnCount"/>

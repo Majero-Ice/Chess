@@ -33,12 +33,12 @@ namespace Chess.models
             Available = false;
             Grid = new Grid();
         }
-
+        // Setzt eine Spielfigur auf dieses Feld
         public void SetPiece(Piece piece)
         {
             Piece = piece;
         }
-
+        // Bewegt eine Spielfigur von diesem Feld auf ein Ziel-Feld
         public void MovePiece(Cell target)
         {
             if (Piece != null)
@@ -55,7 +55,7 @@ namespace Chess.models
                 Piece = null;
             }
         }
-
+        // Behandelt einen Klick auf das Feld und gibt zurück, ob die Aktion gültig ist
         public bool Click()
         {
             if (Available)
@@ -83,7 +83,7 @@ namespace Chess.models
             }
             return false;
         }
-
+        // Prüft, ob der vertikale Weg zum Ziel-Feld frei ist
         public bool IsEmptyVertical(Cell target)
         {
             if (this.X != target.X)
@@ -104,7 +104,7 @@ namespace Chess.models
 
             return true;
         }
-
+        // Prüft, ob der horizontale Weg zum Ziel-Feld frei ist
         public bool IsEmptyHorizontal(Cell target)
         {
             if (this.Y != target.Y)
@@ -125,7 +125,7 @@ namespace Chess.models
 
             return true;
         }
-
+        // Prüft, ob der diagonale Weg zum Ziel-Feld frei ist
         public bool IsEmptyDiagonal(Cell target)
         {
             int absX = Math.Abs(this.X - target.X);

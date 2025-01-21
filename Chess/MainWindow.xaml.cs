@@ -14,9 +14,7 @@ using System.Windows.Shapes;
 
 namespace Chess
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+    // Hauptklasse für das Schachspiel
     public partial class MainWindow : Window
     {
         Cell? SelectedCell = null;
@@ -31,7 +29,7 @@ namespace Chess
             GenerateChessBoard(Board.Cells);
         }
 
-
+        // Überprüft, ob der König im Schach steht und ob ein Spieler gewonnen hat
         private void IsVictory()
         {
             Cell CurrentKingCell = Board.GetKing(Board.CurrentPlayer);
@@ -50,6 +48,7 @@ namespace Chess
             }
         }
 
+        // Fügt die geschlagene Figur der Liste der verlorenen Figuren hinzu
         private void AddLostPiece(Cell cell)
         {
             if (cell.Piece == null)
@@ -65,7 +64,7 @@ namespace Chess
                 BlackPlayer.AddLostPiece(cell.Piece);
             }
         }
-
+        // Aktualisiert die Anzahl der verlorenen Figuren in der Anzeige
         private void LostPiecesCount(Piece? piece)
         {
             if (piece == null)
@@ -127,7 +126,7 @@ namespace Chess
                     break;
             }
         }
-
+        // Wird aufgerufen, wenn der Spieler auf eine Zelle klickt
         private void Click(Cell cell) 
         {
 
@@ -165,7 +164,7 @@ namespace Chess
 
 
         }
-
+        // Generiert das Schachbrett und fügt es zur Benutzeroberfläche hinzu
         private void GenerateChessBoard(List<List<Cell>> cells)
         {
             ChessBoardGrid.RowDefinitions.Clear();
